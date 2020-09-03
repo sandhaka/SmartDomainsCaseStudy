@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using EventSourcing.Exceptions;
 
@@ -36,11 +38,7 @@ namespace EventSourcing.Infrastructure
         /// <returns>Event Sourced Aggregate</returns>
         public TEventSourced FindById(Guid id)
         {
-            if (id.Equals(Guid.Empty))
-            {
-                throw new ArgumentException("Invalid Id or not initialized");
-            }
-
+            Contract.Assume(id != null && !id.Equals(Guid.Empty));
             return InternalFindById(id);
         }
 
@@ -54,11 +52,7 @@ namespace EventSourcing.Infrastructure
         /// <returns>Event Sourced Aggregate</returns>
         public TEventSourced FindById(Guid id, DateTime at)
         {
-            if (id.Equals(Guid.Empty))
-            {
-                throw new ArgumentException("Invalid Id or not initialized");
-            }
-
+            Contract.Assume(id != null && !id.Equals(Guid.Empty));
             return InternalFindByIdAndTime(id, at);
         }
 
@@ -69,10 +63,7 @@ namespace EventSourcing.Infrastructure
         /// <returns>Task</returns>
         public void Add(TEventSourced aggregate)
         {
-            if (aggregate.Id == null || aggregate.Id.Equals(Guid.Empty))
-            {
-                throw new ArgumentException("Invalid Id or not initialized");
-            }
+            Contract.Assume(aggregate?.Id != null && !aggregate.Id.Equals(Guid.Empty));
 
             var streamName = StreamNameFor(aggregate.Id);
 
@@ -86,10 +77,8 @@ namespace EventSourcing.Infrastructure
         /// <returns>Task</returns>
         public void Save(TEventSourced aggregate)
         {
-            if (aggregate.Id == null || aggregate.Id.Equals(Guid.Empty))
-            {
-                throw new ArgumentException("Invalid Id or not initialized");
-            }
+            Contract.Assume(aggregate?.Id != null && !aggregate.Id.Equals(Guid.Empty));
+            
             if (!aggregate.Changes.Any())
             {
                 return;
@@ -187,7 +176,6 @@ namespace EventSourcing.Infrastructure
             var ctor = typeof(TEventSourced)
                 .GetConstructors()
                 .FirstOrDefault(c =>
-                    c.GetParameters().Length > 0 &&
                     c.IsPublic &&
                     c.GetParameters().Length == 1 &&
                     c.GetParameters().FirstOrDefault()?.ParameterType == typeof(Guid));

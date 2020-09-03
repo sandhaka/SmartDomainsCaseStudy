@@ -1,14 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
-using EventSourcing;
-using EventSourcing.Infrastructure;
 using UseCase.Domain;
 
 namespace UseCase.TestFactories
 {
-    public class FleetFactory
+    public class DemoFleetDataFactory
     {
-        public static TransportFleet CreateRandomFleet(int size)
+        public (string DepartureLocation, string ArrivalLocation, TimeSpan TravelTime, TimeSpan Delay, bool Accident)
+            ReadTravel(string id)
+        {
+            throw new NotImplementedException();
+            // TODO Read from events archive
+        }
+        
+        public static List<TransportTruck> CreateRandomFleet(int size)
         {
             var random = new Random();
             Func<int, bool, string> randomString = (int length, bool lowerCase) =>
@@ -30,28 +36,22 @@ namespace UseCase.TestFactories
                     builder.Append(@char);
                 }
 
-                return lowerCase ? builder.ToString().ToLower() : builder.ToString();
+                return lowerCase ? builder.ToString().ToUpper() : builder.ToString();
             };
-
-            var repository = new EventSourcedRepository<TransportTruckStatus>(new InMemoryStore());
             
-            var fleet = new TransportFleet(repository);
+            var fleet = new List<TransportTruck>();
 
             for (var i = 0; i < size; i++)
             {
-                var truck = CreateRandomTruck(repository);
-                truck.Capacity = 50;
-                truck.FuelCapacity = 90;
-                truck.ModelCode = randomString(6, false);
+                var truck = new TransportTruck(
+                    randomString(6, false),
+                    50,
+                    90
+                );
                 
                 fleet.Add(truck);
             }
             return fleet;
-        }
-
-        private static TransportTruck CreateRandomTruck(IEventSourcedRepository<TransportTruckStatus> statusRepository)
-        {
-            return TransportTruck.Create(statusRepository);
         }
     }
 }

@@ -11,16 +11,16 @@ namespace EventSourcing
         /// <summary>
         /// Event id
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; }
         /// <summary>
         /// Timestamp
         /// </summary>
-        public DateTime Created { get; set; }
+        public DateTime Created { get; }
 
-        protected DomainEvent(Guid id, DateTime created)
+        protected DomainEvent(Guid? id = null, DateTime? created = null)
         {
-            Created = created;
-            Id = id;
+            Created = created ?? DateTime.UtcNow;
+            Id = id ?? Guid.NewGuid();
         }
 
         /// <summary>

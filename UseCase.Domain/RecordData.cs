@@ -5,13 +5,16 @@ namespace UseCase.Domain
 {
     public abstract class RecordData : DomainEvent
     {
-        public int PhysicalStatusEvaluation { get; set; }
-        public string Location { get; set; }
-        public string Weather { get; set; }
-        
-        protected RecordData() : base(Guid.NewGuid(), DateTime.UtcNow)
+        public int PhysicalStatusEvaluation { get; }
+        public string Location { get; }
+        public string Weather { get; }
+
+        protected RecordData(int physicalStatusEvaluation, string location, string weather, DateTime created) : 
+            base(null, created)
         {
-            
+            PhysicalStatusEvaluation = physicalStatusEvaluation;
+            Location = location;
+            Weather = weather;
         }
     }
 }
