@@ -1,19 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using UseCase.Domain;
 
 namespace UseCase.TestFactories
 {
-    public class DemoFleetDataFactory
+    public static class DemoFleetDataFactory
     {
-        public (string DepartureLocation, string ArrivalLocation, TimeSpan TravelTime, TimeSpan Delay, bool Accident)
-            ReadTravel(string id)
-        {
-            throw new NotImplementedException();
-            // TODO Read from events archive
-        }
+        private static List<List<DemoHistory>> _demoData;
         
+        public static List<(
+                string DepartureLocation, 
+                string ArrivalLocation, 
+                DateTime DepartureTime, 
+                DateTime ArrivalTime, 
+                TimeSpan Delay, 
+                bool Accident)> 
+            ReadNextJourneyHistory(int elemNumber)
+        {
+            if (_demoData == null)
+            {
+                var dataFile = new DirectoryInfo("../../")
+                    .GetFiles("*.json")
+                    .OrderByDescending(p => p.Name)
+                    .FirstOrDefault() ?? throw new NullReferenceException("Data file");
+
+                var data = File.ReadAllText(dataFile.FullName);
+                _demoData = JsonConvert.DeserializeObject<List<List<DemoHistory>>>(data);
+            }
+
+            return _demoData[elemNumber]
+                .Select(d =>
+                (
+                    d.DepartureLocation, 
+                    d.ArrivalLocation, 
+                    d.DepartureTime, 
+                    d.ArrivalTime, 
+                    d.Delay, 
+                    d.Accident
+                ))
+                .ToList();
+        }
+
         public static List<TransportTruck> CreateRandomFleet(int size)
         {
             var random = new Random();
@@ -44,6 +75,7 @@ namespace UseCase.TestFactories
             for (var i = 0; i < size; i++)
             {
                 var truck = new TransportTruck(
+                    Guid.NewGuid(), 
                     randomString(6, false),
                     50,
                     90

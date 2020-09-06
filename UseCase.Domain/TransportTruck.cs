@@ -9,7 +9,6 @@ namespace UseCase.Domain
 {
     public class TransportTruck : EventSourcedAggregate
     {
-        public Guid Id { get; }
         public string ModelCode { get; }
         public int Capacity { get; }
         public int FuelCapacity { get; }
@@ -24,27 +23,26 @@ namespace UseCase.Domain
             .OrderByDescending(c => c.Created)
             .ToList();
 
-        public TransportTruck(string modelCode, int capacity, int fuelCapacity)
+        public TransportTruck(Guid? id, string modelCode, int capacity, int fuelCapacity) :
+            base(id ?? Guid.NewGuid())
         {
             ModelCode = modelCode;
             Capacity = capacity;
             FuelCapacity = fuelCapacity;
         }
         
-        public static TransportTruck Create(string modelCode, int capacity, int fuelCapacity)
-        {
-            return new TransportTruck(modelCode, capacity, capacity);
-        }
-        
         #region Bl
 
-        public void Arrival(string to, DateTime? when = null, bool hadAccident = false, TimeSpan? delay = null)
+        public void Arrival(
+            string to, 
+            int physicalStatusEvaluation, 
+            string weather, 
+            DateTime? when = null,
+            bool hadAccident = false,
+            TimeSpan? delay = null)
         {
             when ??= DateTime.Now;
             delay ??= TimeSpan.Zero;
-
-            var physicalStatusEvaluation = 0; // TODO
-            string weather = ""; // TODO
 
             var arrivalEvent = new TransportArrival(
                 when.Value, 
@@ -57,12 +55,9 @@ namespace UseCase.Domain
             Causes(arrivalEvent);
         }
 
-        public void Departure(string from, DateTime? when = null)
+        public void Departure(string from, int physicalStatusEvaluation, string weather,  DateTime? when = null)
         {
             when ??= DateTime.Now;
-            
-            var physicalStatusEvaluation = 0; // TODO
-            string weather = ""; // TODO
 
             var leaveEvent = new TransportDeparture(when.Value, physicalStatusEvaluation, from, weather);
             
@@ -77,7 +72,6 @@ namespace UseCase.Domain
         {
             // Temporary add the latest
             var latestChanges = LastChanges
-                .Concat(new [] { @event })
                 .Cast<RecordData>()
                 .ToList();
 
@@ -138,8 +132,7 @@ namespace UseCase.Domain
         public static IEnumerable<TResult> FilterCast<TResult>(this IEnumerable source)
         {
             var s2 = source as IEnumerable<object>;
-            return s2
-                .Where(s => s.GetType() == typeof(TResult))
+            return s2!.Where(s => s.GetType() == typeof(TResult))
                 .Cast<TResult>();
         }
     }

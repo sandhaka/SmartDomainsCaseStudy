@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UseCase.Domain;
+using UseCase.Infrastructure;
 using UseCase.TestFactories;
 using Xunit;
 
@@ -13,6 +13,8 @@ namespace UseCase
     {
         private List<TransportTruck> _fleet;
 
+        #region [ Setup ]
+        
         /// <summary>
         /// 
         /// </summary>
@@ -26,21 +28,40 @@ namespace UseCase
         /// </summary>
         private void AddFleetDemoHistory()
         {
+            var c = 0;
             foreach (var transportTruck in _fleet)
             {
-                
-                
-                transportTruck.Departure("MILANO");
-                transportTruck.Arrival("ROMA", 
-                    DateTime.UtcNow + TimeSpan.FromHours(7), 
-                    false,
-                    TimeSpan.FromMinutes(45));
+                var journeys = DemoFleetDataFactory.ReadNextJourneyHistory(c++);
+
+                foreach (var journey in journeys)
+                {
+                    transportTruck.Departure(
+                        journey.DepartureLocation,
+                        PhysicalMeasurementFacade.Measure(transportTruck),
+                        WeatherServiceFacade.Forecast(transportTruck),
+                        journey.DepartureTime);
+                    
+                    transportTruck.Arrival(
+                        journey.ArrivalLocation, 
+                        PhysicalMeasurementFacade.Measure(transportTruck),
+                        WeatherServiceFacade.Forecast(transportTruck),
+                        journey.ArrivalTime, 
+                        journey.Accident,
+                        journey.Delay
+                    );   
+                }
             }
         }
 
+        #endregion
+        
+        /// <summary>
+        /// 
+        /// </summary>
         [Fact]
         public void RunDemo()
         {
+            /* Demo setup */
             AddFleetDemoHistory();
             
         }

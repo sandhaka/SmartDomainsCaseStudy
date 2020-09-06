@@ -3,5 +3,6 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::17380223-23F5-4614-9F67-1D047701BA10::.NETCoreApp,Version=v3.1::DotNetCaseStudy.IntersectTrip.Test&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::F666D5E2-1FF3-4424-9FA7-0B2CF044C1BE::.NETCoreApp,Version=v3.1::UseCase.TestCase.RunDemo&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::F666D5E2-1FF3-4424-9FA7-0B2CF044C1BE::.NETCoreApp,Version=v3.1::UseCase.DemoUtilities.GenerateDemoDataFile&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
