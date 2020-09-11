@@ -15,7 +15,7 @@ namespace UseCase.Infrastructure
         public static void InfLog(string text, bool line = true)
         {
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            if (line) Console.WriteLine($"[INFRASTRUCTURE] {text}");
+            if (line) Console.WriteLine($"[APP] {text}");
             else Console.Write(text);
             Console.ResetColor();
         }

@@ -11,10 +11,11 @@ namespace UseCase.Domain
             DateTime time,
             double fatigue, 
             string location, 
-            string weather, 
+            string weather,
+            bool weatherIsGood,
             bool hadAccident, 
             TimeSpan delay) :
-            base(fatigue, location, weather, time)
+            base(fatigue, location, weather, time, weatherIsGood)
         {
             HadAccident = hadAccident;
             Delay = delay;

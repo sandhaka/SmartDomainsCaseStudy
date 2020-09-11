@@ -9,7 +9,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\UseCase.Domain\UseCase.Domain.csproj" />
       <ProjectReference Include="..\Utils\Utils.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Accord.MachineLearning" Version="3.8.0" />
     </ItemGroup>
 
 </Project>

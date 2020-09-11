@@ -20,6 +20,11 @@ namespace UseCase.Infrastructure
         {
             return new[] { WeatherCode.Sunny, WeatherCode.Dry, WeatherCode.Humid }.Contains(weatherCode);
         }
+        
+        public static bool IsGoodWeather(string weatherCode)
+        {
+            return new[] { WeatherCode.Sunny, WeatherCode.Dry, WeatherCode.Humid }.Contains((WeatherCode)Enum.Parse(typeof(WeatherCode), weatherCode));
+        }
     }
 
     public enum WeatherCode

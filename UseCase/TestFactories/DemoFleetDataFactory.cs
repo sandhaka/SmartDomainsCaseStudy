@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Ai.Infrastructure.NaiveBayes;
 using Newtonsoft.Json;
 using UseCase.Domain;
 using UseCase.Infrastructure;
@@ -52,7 +53,11 @@ namespace UseCase.TestFactories
 
         public static List<TransportTruck> CreateRandomFleet(int size)
         {
+            // By IoC
+            IWiseActor wiseActor = new WiseActor();
+            
             var random = new Random();
+            
             Func<int, bool, string> randomString = (int length, bool lowerCase) =>
             {
                 var builder = new StringBuilder(length);
@@ -83,7 +88,8 @@ namespace UseCase.TestFactories
                     Guid.NewGuid(), 
                     randomString(6, false),
                     50,
-                    90
+                    90,
+                    wiseActor
                 );
                 
                 // Bind optional logger domain action

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UseCase.Domain;
 using UseCase.Infrastructure;
 using UseCase.TestFactories;
@@ -41,12 +42,14 @@ namespace UseCase
                         journey.DepartureLocation,
                         0,
                         journey.WeatherCode,
+                        WeatherServiceFacade.IsGoodWeather(journey.WeatherCode),
                         journey.DepartureTime);
                     
                     transportTruck.Arrival(
                         journey.ArrivalLocation, 
                         journey.FatigueScore,
                         journey.WeatherCode,
+                        WeatherServiceFacade.IsGoodWeather(journey.WeatherCode),
                         journey.ArrivalTime, 
                         journey.Accident,
                         journey.Delay
@@ -59,15 +62,36 @@ namespace UseCase
 
         #endregion
         
-        /// <summary>
-        /// 
-        /// </summary>
         [Fact]
         public void RunDemo()
         {
-            /* Demo setup */
+            // Demo setup 
             AddFleetDemoHistory();
+
+            // Estimation on these variables:
+            const bool goodWeather = false;
             
+            // Get results
+            DemoLogger.InfLog("Estimate the probability to have an accident:");
+
+            var rank = new Dictionary<Guid, double>();
+            
+            _fleet.ForEach(truck =>
+            {
+                // Trigger internal model updating
+                truck.UpdateStats();
+                
+                var prediction = truck.PredictAccident(goodWeather);
+                var prob = prediction.Probabilities.ToList();
+                
+                DemoLogger.InfLog($"Truck {truck.ModelCode}: {prob[0].Label}-> {prob[0].ProbabilityScore:P}, {prob[1].Label}-> {prob[1].ProbabilityScore:P}");
+                
+                rank.Add(truck.Id, prob[1].ProbabilityScore);
+            });
+
+            var candidate = _fleet.Find(f => f.Id.Equals(rank.OrderBy(c => c.Value).First().Key));
+            
+            DemoLogger.InfLog($"Best candidate truck for the next journey: {candidate}");
         }
     }
 }
