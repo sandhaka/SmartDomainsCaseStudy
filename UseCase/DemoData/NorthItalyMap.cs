@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using Ai.Infrastructure.Search.Graph;
 
 namespace UseCase.DemoData
@@ -107,13 +106,6 @@ namespace UseCase.DemoData
         public NorthItalyMap() : base(GraphData)
         {
 
-        }
-
-        public double PathCost(StringAim a, StringAim b)
-        {
-            var loc = Data.Find(d => d.State.Equals(a));
-            var target = loc!.Neighbors.Find(d => d.State.Equals(b));
-            return target!.Cost;
         }
     }
 }

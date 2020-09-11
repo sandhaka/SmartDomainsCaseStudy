@@ -7,7 +7,7 @@ namespace Ai.Infrastructure.Search.Walker
     /// <summary>
     /// Create walker search strategies
     /// </summary>
-    internal static class WalkerFactory
+    public static class WalkerFactory
     {
         /// <summary>
         /// Expands the shallowest nodes first.

@@ -20,5 +20,12 @@ namespace Utils.Option
             sequence.Select(map)
                 .OfType<Some<TResult>>()
                 .Select(some => some.Content);
+
+        public static Option<TResult> IfAny<T, TResult>(
+            this IEnumerable<T> sequence, Func<IEnumerable<T>, Option<TResult>> functor)
+        {
+            var list = sequence.ToList();
+            return list.Any() ? functor(list) : new None<TResult>();
+        }
     }
 }

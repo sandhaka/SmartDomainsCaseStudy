@@ -15,9 +15,10 @@ namespace UseCase.Domain
         
         public TimeSpan CumulativeDelay { get; private set; }
         public string Location { get; private set; }
-        public double PhysicalStatusEvaluationMeanLastWeek { get; private set; }
-        public double PhysicalStatusEvaluationMeanLast30Days { get; private set; }
+        public double FatigueMeanLastWeek { get; private set; }
+        public double FatigueMeanLast30Days { get; private set; }
         public int TotalAccidents { get; private set; }
+        public Action<string, bool> DomainLog { get; set; }
 
         private List<DomainEvent> LastChanges => Changes
             .OrderByDescending(c => c.Created)
@@ -35,7 +36,7 @@ namespace UseCase.Domain
 
         public void Arrival(
             string to, 
-            int physicalStatusEvaluation, 
+            double fatigue, 
             string weather, 
             DateTime? when = null,
             bool hadAccident = false,
@@ -46,7 +47,7 @@ namespace UseCase.Domain
 
             var arrivalEvent = new TransportArrival(
                 when.Value, 
-                physicalStatusEvaluation, 
+                fatigue, 
                 to, 
                 weather, 
                 hadAccident, 
@@ -55,11 +56,11 @@ namespace UseCase.Domain
             Causes(arrivalEvent);
         }
 
-        public void Departure(string from, int physicalStatusEvaluation, string weather,  DateTime? when = null)
+        public void Departure(string from, double fatigue, string weather,  DateTime? when = null)
         {
             when ??= DateTime.Now;
 
-            var leaveEvent = new TransportDeparture(when.Value, physicalStatusEvaluation, from, weather);
+            var leaveEvent = new TransportDeparture(when.Value, fatigue, from, weather);
             
             Causes(leaveEvent);
         }
@@ -70,6 +71,8 @@ namespace UseCase.Domain
         
         protected override void When(DomainEvent @event)
         {
+            DomainLog?.Invoke(".", false);
+            
             // Temporary add the latest
             var latestChanges = LastChanges
                 .Cast<RecordData>()
@@ -82,12 +85,12 @@ namespace UseCase.Domain
                 {
                     Location = arrivalEvent.Location;
                     CumulativeDelay += arrivalEvent.Delay;
-                    PhysicalStatusEvaluationMeanLastWeek = latestChanges
+                    FatigueMeanLastWeek = latestChanges
                         .Take(7)
-                        .Average(d => d.PhysicalStatusEvaluation);
-                    PhysicalStatusEvaluationMeanLast30Days = latestChanges
+                        .Average(d => d.Fatigue);
+                    FatigueMeanLast30Days = latestChanges
                         .Take(30)
-                        .Average(d => d.PhysicalStatusEvaluation);
+                        .Average(d => d.Fatigue);
                     TotalAccidents = latestChanges
                         .FilterCast<TransportArrival>()
                         .Count(evt => evt.HadAccident);
@@ -108,8 +111,8 @@ namespace UseCase.Domain
             {
                 CumulativeDelay,
                 Location,
-                PhysicalStatusEvaluationMeanLastWeek,
-                PhysicalStatusEvaluationMeanLastMonth = PhysicalStatusEvaluationMeanLast30Days,
+                FatigueMeanLastWeek,
+                FatigueMeanLast30Days,
                 TotalAccidents
             });
         }
@@ -119,8 +122,8 @@ namespace UseCase.Domain
             var aggregateData = JsonConvert.DeserializeObject<dynamic>(data);
             CumulativeDelay = aggregateData.CumulativeDelay;
             Location = aggregateData.Location;
-            PhysicalStatusEvaluationMeanLastWeek = aggregateData.PhysicalStatusEvaluationMeanLastWeek;
-            PhysicalStatusEvaluationMeanLast30Days = aggregateData.PhysicalStatusEvaluationMeanLastMonth;
+            FatigueMeanLastWeek = aggregateData.FatigueMeanLastWeek;
+            FatigueMeanLast30Days = aggregateData.FatigueMeanLast30Days;
             TotalAccidents = aggregateData.TotalAccidents;
         }
         

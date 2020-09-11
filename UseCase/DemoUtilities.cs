@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Ai.Infrastructure.Search.Graph;
+using Ai.Infrastructure.Search.Problem;
+using Ai.Infrastructure.Search.Walker;
 using Newtonsoft.Json;
 using UseCase.DemoData;
+using UseCase.Infrastructure;
 using Xunit;
 
 namespace UseCase
@@ -38,13 +41,15 @@ namespace UseCase
                     var startLocation = startNode.State;
                     var arrivalLocation = arrivalNode.State;
                     
-                    var arrTime = GetJourneyDurationByPathCost(startTime, _map.PathCost(startLocation, arrivalLocation), out var delay);
+                    var arrTime = GetJourneyDurationByPathCost(startTime, PathCost(startLocation, arrivalLocation), out var delay);
                     
                     elemData.Add(new DemoHistory
                     {
                         DepartureLocation = startLocation.Name,
                         ArrivalLocation = arrivalLocation.Name,
-                        Accident = false, // TODO: Very low probability
+                        Accident = false, // Manually set
+                        WeatherCode = WeatherServiceFacade.Forecast(),
+                        FatigueScore = FatigueMeasurementFacade.Measure(elemData),
                         Delay = delay,
                         DepartureTime = startTime,
                         ArrivalTime = arrTime
@@ -61,19 +66,36 @@ namespace UseCase
             }
 
             var jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
-            File.WriteAllText($"../../demo_history{DateTime.Now.Ticks:x8}.json", jsonData);
+            File.WriteAllText($"../../../demo_history{DateTime.Now.Ticks:x8}.json", jsonData);
+        }
+
+        private double PathCost(StringAim startLocation, StringAim arrivalLocation)
+        {
+            var search = TestSearchProblem.Of(_map, startLocation.Name, arrivalLocation.Name);
+            var walker = WalkerFactory.CreateUniformCost(search);
+            
+            if (walker.Search() != SearchExitCode.Success)
+            {
+                throw new ApplicationException($"Search failure: {startLocation} -> {arrivalLocation}");
+            }
+            
+            return walker.Solution.Last().PathCost;
         }
 
         private GraphNode<StringAim> GetNextHopRandomly(GraphNode<StringAim> startNode)
         {
-            var n = startNode.Neighbors[_random.Next(0, startNode.Neighbors.Count)];
+            GraphNode<StringAim> n;
+            do
+            {
+                n = _map.Data[_random.Next(0, _map.Data.Count)];
+            } while (n.State == startNode.State);
             return _map.Data.Single(d => d.State.Equals(n.State));
         }
 
         private DateTime GetJourneyDurationByPathCost(DateTime start, double cost, out TimeSpan delay)
         {
             delay = _random.Next(0, 10) <= 1 ? TimeSpan.FromMinutes(_random.Next(0, 120)) : TimeSpan.Zero;
-            return start + TimeSpan.FromHours(cost / 100) + delay; // Assume 100Km/h as mean velocity
+            return start + TimeSpan.FromHours(cost / _random.Next(50, 120)) + delay; // Assume 50-120Km/h as mean velocity
         }
 
         private TimeSpan GetRealisticRestTime()
@@ -83,13 +105,28 @@ namespace UseCase
         }
     }
 
-    class DemoHistory
+    public class DemoHistory
     {
         public string DepartureLocation { get; set; }
         public string ArrivalLocation { get; set; } 
         public DateTime DepartureTime { get; set; } 
         public DateTime ArrivalTime { get; set; }
         public TimeSpan Delay { get; set; }
+        public string WeatherCode { get; set; }
+        public double FatigueScore { get; set; }
         public bool Accident { get; set; }
+    }
+    
+    public class TestSearchProblem : SearchProblem<StringAim, GraphNode<StringAim>>
+    {
+        public TestSearchProblem(Graph<StringAim> graph, StringAim initial, StringAim goal) :
+            base(graph, initial, goal)
+        {
+        }
+
+        public static TestSearchProblem Of(Graph<StringAim> graph, string startState, string goal)
+        {
+            return new TestSearchProblem(graph, startState, goal);
+        }
     }
 }

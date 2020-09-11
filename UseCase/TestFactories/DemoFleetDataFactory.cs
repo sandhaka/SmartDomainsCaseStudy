@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using UseCase.Domain;
+using UseCase.Infrastructure;
 
 namespace UseCase.TestFactories
 {
@@ -17,13 +18,15 @@ namespace UseCase.TestFactories
                 string ArrivalLocation, 
                 DateTime DepartureTime, 
                 DateTime ArrivalTime, 
+                string WeatherCode,
+                double FatigueScore,
                 TimeSpan Delay, 
                 bool Accident)> 
             ReadNextJourneyHistory(int elemNumber)
         {
             if (_demoData == null)
             {
-                var dataFile = new DirectoryInfo("../../")
+                var dataFile = new DirectoryInfo("../../../")
                     .GetFiles("*.json")
                     .OrderByDescending(p => p.Name)
                     .FirstOrDefault() ?? throw new NullReferenceException("Data file");
@@ -39,6 +42,8 @@ namespace UseCase.TestFactories
                     d.ArrivalLocation, 
                     d.DepartureTime, 
                     d.ArrivalTime, 
+                    d.WeatherCode,
+                    d.FatigueScore,
                     d.Delay, 
                     d.Accident
                 ))
@@ -80,6 +85,9 @@ namespace UseCase.TestFactories
                     50,
                     90
                 );
+                
+                // Bind optional logger domain action
+                truck.DomainLog = DemoLogger.DomainLog;
                 
                 fleet.Add(truck);
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UseCase.Domain;
 using UseCase.Infrastructure;
 using UseCase.TestFactories;
@@ -6,12 +7,9 @@ using Xunit;
 
 namespace UseCase
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class TestCase
     {
-        private List<TransportTruck> _fleet;
+        private readonly List<TransportTruck> _fleet;
 
         #region [ Setup ]
         
@@ -20,7 +18,9 @@ namespace UseCase
         /// </summary>
         public TestCase()
         {
+            DemoLogger.InfLog("Create fleet ...");
             _fleet = DemoFleetDataFactory.CreateRandomFleet(3);
+            DemoLogger.InfLog($"Fleet with {_fleet.Count} units created");
         }
 
         /// <summary>
@@ -28,6 +28,8 @@ namespace UseCase
         /// </summary>
         private void AddFleetDemoHistory()
         {
+            DemoLogger.InfLog("Adding historical data to fleet...");
+            
             var c = 0;
             foreach (var transportTruck in _fleet)
             {
@@ -37,20 +39,22 @@ namespace UseCase
                 {
                     transportTruck.Departure(
                         journey.DepartureLocation,
-                        PhysicalMeasurementFacade.Measure(transportTruck),
-                        WeatherServiceFacade.Forecast(transportTruck),
+                        0,
+                        journey.WeatherCode,
                         journey.DepartureTime);
                     
                     transportTruck.Arrival(
                         journey.ArrivalLocation, 
-                        PhysicalMeasurementFacade.Measure(transportTruck),
-                        WeatherServiceFacade.Forecast(transportTruck),
+                        journey.FatigueScore,
+                        journey.WeatherCode,
                         journey.ArrivalTime, 
                         journey.Accident,
                         journey.Delay
                     );   
                 }
             }
+            DemoLogger.InfLog(Environment.NewLine, false);
+            DemoLogger.InfLog("Fleet historical data initialization done");
         }
 
         #endregion

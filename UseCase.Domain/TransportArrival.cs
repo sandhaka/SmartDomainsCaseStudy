@@ -9,12 +9,12 @@ namespace UseCase.Domain
 
         public TransportArrival(
             DateTime time,
-            int physicalStatusEvaluation, 
+            double fatigue, 
             string location, 
             string weather, 
             bool hadAccident, 
             TimeSpan delay) :
-            base(physicalStatusEvaluation, location, weather, time)
+            base(fatigue, location, weather, time)
         {
             HadAccident = hadAccident;
             Delay = delay;
