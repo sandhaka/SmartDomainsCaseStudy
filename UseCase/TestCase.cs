@@ -14,14 +14,15 @@ namespace UseCase
 
         #region [ Setup ]
         
-        /// <summary>
-        /// 
-        /// </summary>
         public TestCase()
         {
             DemoLogger.InfLog("Create fleet ...");
             _fleet = DemoFleetDataFactory.CreateRandomFleet(3);
             DemoLogger.InfLog($"Fleet with {_fleet.Count} units created");
+            DemoLogger.InfLog("Adding historical data to fleet...");
+            AddFleetDemoHistory();
+            DemoLogger.InfLog(Environment.NewLine, false);
+            DemoLogger.InfLog("Fleet historical data initialization done");
         }
 
         /// <summary>
@@ -29,8 +30,6 @@ namespace UseCase
         /// </summary>
         private void AddFleetDemoHistory()
         {
-            DemoLogger.InfLog("Adding historical data to fleet...");
-            
             var c = 0;
             foreach (var transportTruck in _fleet)
             {
@@ -56,19 +55,24 @@ namespace UseCase
                     );   
                 }
             }
-            DemoLogger.InfLog(Environment.NewLine, false);
-            DemoLogger.InfLog("Fleet historical data initialization done");
         }
 
         #endregion
         
+        /// <summary>
+        /// Predict future events outcome with [Bayesian Networks].
+        /// ---
+        /// In this example smart domain capabilities is used to predict the accident probability based on
+        /// statistical data collected for each truck.
+        /// The truck with the lower accident probability is selected for the next journey (with bad weather condition).
+        /// The predict method is exposed in the domain layer, bringing us to obtain a real-time information embedding
+        /// these "smart" features directly in the domain objects.
+        /// This is a good resonance example of Event Sourcing with 4.0 technology.
+        /// </summary>
         [Fact]
-        public void RunDemo()
+        public void ChooseTruckCandidateWithLowerAccidentProbability()
         {
-            // Demo setup 
-            AddFleetDemoHistory();
-
-            // Estimation on these variables:
+            // Estimation on bad weather condition
             const bool goodWeather = false;
             
             // Get results
@@ -92,6 +96,17 @@ namespace UseCase
             var candidate = _fleet.Find(f => f.Id.Equals(rank.OrderBy(c => c.Value).First().Key));
             
             DemoLogger.InfLog($"Best candidate truck for the next journey: {candidate}");
+        }
+        
+        /// <summary>
+        /// Auto-assignment trips to fleet members by [optimization algorithms].
+        /// ---
+        /// 
+        /// </summary>
+        [Fact]
+        public void OptimizeAndAssignTrips()
+        {
+            
         }
     }
 }

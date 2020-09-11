@@ -4,11 +4,11 @@ using System.Linq;
 using Accord.MachineLearning.Bayes;
 using UseCase.Domain;
 
-namespace Ai.Infrastructure.NaiveBayes
+namespace Ai.Infrastructure
 {
     public class WiseActor : IWiseActor
     {
-        private readonly IDictionary<Guid, Accord.MachineLearning.Bayes.NaiveBayes> _model = 
+        private readonly IDictionary<Guid, Accord.MachineLearning.Bayes.NaiveBayes> _bayesianModel = 
             new Dictionary<Guid, Accord.MachineLearning.Bayes.NaiveBayes>();
         
         private readonly NaiveBayesLearning _learner;
@@ -24,13 +24,13 @@ namespace Ai.Infrastructure.NaiveBayes
             
             var itemModel = _learner.Learn(translatedData.x, translatedData.y);
             
-            if (!_model.ContainsKey(transportTruck.Id))
+            if (!_bayesianModel.ContainsKey(transportTruck.Id))
             {
-                _model.Add(transportTruck.Id, itemModel);
+                _bayesianModel.Add(transportTruck.Id, itemModel);
                 return;
             }
 
-            _model[transportTruck.Id] = itemModel;
+            _bayesianModel[transportTruck.Id] = itemModel;
         }
 
         public (int Answer, IEnumerable<(string Label, double ProbabilityScore)> Probabilities) FutureAccidentIncidence(
@@ -46,9 +46,9 @@ namespace Ai.Infrastructure.NaiveBayes
                 fatigue > 0.25 ? 1 : 0
             };
             
-            var answer = _model[transportTruckId].Decide(input);
+            var answer = _bayesianModel[transportTruckId].Decide(input);
 
-            var prob = _model[transportTruckId].Probabilities(input);
+            var prob = _bayesianModel[transportTruckId].Probabilities(input);
 
             return (answer, new[]
             {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Ai.Infrastructure.NaiveBayes;
+using Ai.Infrastructure;
 using Newtonsoft.Json;
 using UseCase.Domain;
 using UseCase.Infrastructure;

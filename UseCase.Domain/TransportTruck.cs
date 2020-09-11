@@ -17,6 +17,7 @@ namespace UseCase.Domain
     public class TransportTruck : EventSourcedAggregate
     {
         private readonly IWiseActor _aiActor;
+        
         public string ModelCode { get; }
         public int Capacity { get; }
         public int FuelCapacity { get; }

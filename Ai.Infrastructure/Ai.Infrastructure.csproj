@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="Csp" />
       <Folder Include="Search" />
     </ItemGroup>
 
