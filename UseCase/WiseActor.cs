@@ -4,12 +4,12 @@ using System.Linq;
 using Accord.MachineLearning.Bayes;
 using UseCase.Domain;
 
-namespace Ai.Infrastructure
+namespace UseCase
 {
     public class WiseActor : IWiseActor
     {
-        private readonly IDictionary<Guid, Accord.MachineLearning.Bayes.NaiveBayes> _bayesianModel = 
-            new Dictionary<Guid, Accord.MachineLearning.Bayes.NaiveBayes>();
+        private readonly IDictionary<Guid, NaiveBayes> _bayesianModel = 
+            new Dictionary<Guid, NaiveBayes>();
         
         private readonly NaiveBayesLearning _learner;
 

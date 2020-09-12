@@ -24,10 +24,7 @@ namespace UseCase
             DemoLogger.InfLog(Environment.NewLine, false);
             DemoLogger.InfLog("Fleet historical data initialization done");
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         private void AddFleetDemoHistory()
         {
             var c = 0;
@@ -64,10 +61,9 @@ namespace UseCase
         /// ---
         /// In this example smart domain capabilities is used to predict the accident probability based on
         /// statistical data collected for each truck.
-        /// The truck with the lower accident probability is selected for the next journey (with bad weather condition).
         /// The predict method is exposed in the domain layer, bringing us to obtain a real-time information embedding
         /// these "smart" features directly in the domain objects.
-        /// This is a good resonance example of Event Sourcing with 4.0 technology.
+        /// This is a good resonance example of Event Sourcing with 4.0 technologies.
         /// </summary>
         [Fact]
         public void ChooseTruckCandidateWithLowerAccidentProbability()
@@ -88,20 +84,22 @@ namespace UseCase
                 var prediction = truck.PredictAccident(goodWeather);
                 var prob = prediction.Probabilities.ToList();
                 
-                DemoLogger.InfLog($"Truck {truck.ModelCode}: {prob[0].Label}-> {prob[0].ProbabilityScore:P}, {prob[1].Label}-> {prob[1].ProbabilityScore:P}");
+                DemoLogger.InfLog($"Truck {truck.ModelCode}: {prob[0].Label}-> {prob[0].ProbabilityScore:P}, " +
+                                  $"{prob[1].Label}-> {prob[1].ProbabilityScore:P}");
                 
                 rank.Add(truck.Id, prob[1].ProbabilityScore);
             });
 
-            var candidate = _fleet.Find(f => f.Id.Equals(rank.OrderBy(c => c.Value).First().Key));
+            var candidateId = rank.OrderBy(c => c.Value).First().Key;
+            var candidate = _fleet.Find(f => f.Id.Equals(candidateId));
             
-            DemoLogger.InfLog($"Best candidate truck for the next journey: {candidate}");
+            DemoLogger.InfLog($"Best truck: {candidate}");
         }
         
         /// <summary>
         /// Auto-assignment trips to fleet members by [optimization algorithms].
         /// ---
-        /// 
+        ///  
         /// </summary>
         [Fact]
         public void OptimizeAndAssignTrips()
