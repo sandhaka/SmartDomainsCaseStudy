@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Ai.Infrastructure.Csp.Csp;
 
-namespace Ai.Infrastructure.Csp.Resolvers.BackTrackingSearch.Parametric
+namespace Csp.Resolvers.BackTrackingSearch.Parametric
 {
     public class DomainCustomOrder<T> : IDomainValuesOrderingStrategy<T>
         where T : CspValue

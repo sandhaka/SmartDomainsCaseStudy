@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using Ai.Infrastructure.Csp.Model;
+using Ai.Infrastructure.Csp.Csp;
+using Ai.Infrastructure.Csp.Csp.Model;
 
 // Note: readability is preferred
 // ReSharper disable ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
 // ReSharper disable InvertIf
 // ReSharper disable ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
 
-namespace Ai.Infrastructure.Csp.Resolvers
+namespace Csp.Resolvers
 {
     internal class Ac3<T> : IArcConsistency<T>
         where T : CspValue

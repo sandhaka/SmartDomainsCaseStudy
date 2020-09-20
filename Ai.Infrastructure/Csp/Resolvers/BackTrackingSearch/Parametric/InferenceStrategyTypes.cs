@@ -1,4 +1,6 @@
-namespace Ai.Infrastructure.Csp.Resolvers.BackTrackingSearch.Parametric
+using Ai.Infrastructure.Csp.Csp;
+
+namespace Csp.Resolvers.BackTrackingSearch.Parametric
 {
     public static class InferenceStrategyTypes<T>
         where T : CspValue

@@ -1,0 +1,114 @@
+<Project>
+  <Name>Smart Domains</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Transport Truck Domain</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>TransportTruck</Name>
+        <Access>Public</Access>
+        <Location left="312" top="409" />
+        <Size width="275" height="270" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public string Location { get; }</Member>
+        <Member type="Property">public stringt ModelCode { get; }</Member>
+        <Member type="Property">public double AverageFatigueLastWeek { get; private set; }</Member>
+        <Member type="Property">public int TotalAccidents { get; private set; }</Member>
+        <Member type="Method">public void Arrival()</Member>
+        <Member type="Method">public void Departure()</Member>
+        <Member type="Method">public override void When(DomainEvent @event)</Member>
+        <Member type="Property">public List&lt;DomainEvent&gt; Changes { get; protected set; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IWiseActor</Name>
+        <Access>Public</Access>
+        <Location left="233" top="188" />
+        <Size width="404" height="119" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Update(TransportTruck transportTruck)</Member>
+        <Member type="Method">object FutureAccidentIncidence()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>TransportArrival</Name>
+        <Access>Public</Access>
+        <Location left="706" top="516" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public bool HadAccident { get; }</Member>
+        <Member type="Property">public TimeSpan Delay { get; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>RecordData</Name>
+        <Access>Public</Access>
+        <Location left="737" top="281" />
+        <Size width="208" height="152" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public double Fatigue { get; }</Member>
+        <Member type="Property">public string Location { get; }</Member>
+        <Member type="Property">public string Weather { get; }</Member>
+        <Member type="Property">public bool GoodWeather { get; }</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>TransportDeparture</Name>
+        <Access>Public</Access>
+        <Location left="894" top="516" />
+        <Size width="162" height="131" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>DomainEvent</Name>
+        <Access>Public</Access>
+        <Location left="764" top="92" />
+        <Size width="162" height="138" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public Guid Id { get; }</Member>
+        <Member type="Property">public DateTime Created { get; }</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Dependency" first="0" second="1">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>426</X>
+          <Y>338</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Generalization" first="2" second="3">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="3" second="5">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Generalization" first="4" second="3">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="0" second="5">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>612</X>
+          <Y>562</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>738</X>
+          <Y>157</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>

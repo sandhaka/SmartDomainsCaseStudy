@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SmartEventSourced", "SmartEventSourced", "{1A78D3D5-1AB1-4B34-991D-D6065EC938C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UseCase", "UseCase\UseCase.csproj", "{F666D5E2-1FF3-4424-9FA7-0B2CF044C1BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransportFleet.UseCase", "TransportFleet.UseCase\TransportFleet.UseCase.csproj", "{F666D5E2-1FF3-4424-9FA7-0B2CF044C1BE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{BFD6F6D1-F081-4E7F-9FEA-7C857CB50B5E}"
 EndProject
@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing", "EventSourc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing.Infrastructure", "EventSourcing.Infrastructure\EventSourcing.Infrastructure.csproj", "{98325F84-7004-48EE-80FF-5623156670C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UseCase.Domain", "UseCase.Domain\UseCase.Domain.csproj", "{9A9F9791-AC19-4454-A2FA-A74E42EB0FE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransportFleet.Domain", "TransportFleet.Domain\TransportFleet.Domain.csproj", "{9A9F9791-AC19-4454-A2FA-A74E42EB0FE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ai.Infrastructure", "Ai.Infrastructure\Ai.Infrastructure.csproj", "{9750631E-EC91-41EC-8A8E-B97B3FBDAEF6}"
 EndProject

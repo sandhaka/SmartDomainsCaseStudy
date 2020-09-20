@@ -1,6 +1,7 @@
-using Ai.Infrastructure.Csp.Model;
+using Ai.Infrastructure.Csp.Csp;
+using Ai.Infrastructure.Csp.Csp.Model;
 
-namespace Ai.Infrastructure.Csp.Resolvers.BackTrackingSearch.Parametric
+namespace Csp.Resolvers.BackTrackingSearch.Parametric
 {
     internal class FirstUnassignedVariable<T> : ISelectUnassignedVariableStrategy<T>
         where T : CspValue

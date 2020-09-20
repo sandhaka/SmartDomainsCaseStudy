@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
+using Ai.Infrastructure.Csp.Csp;
 
-namespace Ai.Infrastructure.Csp.Resolvers
+namespace Csp.Resolvers
 {
     public class MinConflicts<T> : IResolver<T>
         where T : CspValue

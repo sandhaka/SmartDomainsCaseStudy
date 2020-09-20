@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Ai.Infrastructure.Csp.Csp;
 
-namespace Ai.Infrastructure.Csp.Resolvers.BackTrackingSearch.Parametric
+namespace Csp.Resolvers.BackTrackingSearch.Parametric
 {
     internal class UnorderedDomainValues<T> : IDomainValuesOrderingStrategy<T>
         where T : CspValue

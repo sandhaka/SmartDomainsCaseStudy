@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Ai.Infrastructure.Csp.Csp;
 
-namespace Ai.Infrastructure.Csp.Resolvers.BackTrackingSearch.Parametric
+namespace Csp.Resolvers.BackTrackingSearch.Parametric
 {
     public class LeastConstrainingValues<T> : IDomainValuesOrderingStrategy<T>
         where T : CspValue

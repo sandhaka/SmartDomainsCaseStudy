@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Ai.Infrastructure.Csp.Csp;
 
-namespace Ai.Infrastructure.Csp.Resolvers.BackTrackingSearch
+namespace Csp.Resolvers.BackTrackingSearch
 {
     public interface IDomainValuesOrderingStrategy<T>
         where T : CspValue

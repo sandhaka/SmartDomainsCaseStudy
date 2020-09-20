@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Ai.Infrastructure.Csp.Csp;
 
-namespace Ai.Infrastructure.Csp.Resolvers.BackTrackingSearch
+namespace Csp.Resolvers.BackTrackingSearch
 {
     internal interface IInferenceStrategy<T>
         where T : CspValue

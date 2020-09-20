@@ -1,6 +1,7 @@
 using System.Linq;
+using Ai.Infrastructure.Csp.Csp;
 
-namespace Ai.Infrastructure.Csp.Resolvers.BackTrackingSearch
+namespace Csp.Resolvers.BackTrackingSearch
 {
     internal class BackTrackingSearch<T> : IResolver<T>
         where T : CspValue

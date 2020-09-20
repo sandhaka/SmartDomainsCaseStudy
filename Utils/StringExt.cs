@@ -1,7 +1,10 @@
+using System;
+using System.IO;
+using System.Reflection;
+
 namespace Utils
 {
-    public class StringExt
+    public static class StringExt
     {
-        
     }
 }

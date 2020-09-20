@@ -1,6 +1,7 @@
-using Ai.Infrastructure.Csp.Model;
+using Ai.Infrastructure.Csp.Csp;
+using Ai.Infrastructure.Csp.Csp.Model;
 
-namespace Ai.Infrastructure.Csp.Resolvers.BackTrackingSearch
+namespace Csp.Resolvers.BackTrackingSearch
 {
     internal interface ISelectUnassignedVariableStrategy<T>
         where T : CspValue
