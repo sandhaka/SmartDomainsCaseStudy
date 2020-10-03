@@ -129,8 +129,25 @@ namespace TransportFleet.UseCase
                     (variableA, transportTruckA, variableB, transportTruckB) =>
                     {
                         var dayA = variableA.Split('.').First();
-                        var dayB = variableA.Split('.').First();
+                        var dayB = variableB.Split('.').First();
                         return dayA != dayB || transportTruckA != transportTruckB;
+                    },    
+                    // Avoid commitment on Monday and Tuesday
+                    (variableA, transportTruckA, variableB, transportTruckB) =>
+                    {
+                        var dayA = variableA.Split('.').First();
+                        var dayB = variableB.Split('.').First();
+                        if (
+                            string.Compare(dayA, "mon", StringComparison.OrdinalIgnoreCase) == 0 &&
+                            string.Compare(dayB, "tue", StringComparison.OrdinalIgnoreCase) == 0 ||
+                            string.Compare(dayA, "tue", StringComparison.OrdinalIgnoreCase) == 0 &&
+                            string.Compare(dayB, "mon", StringComparison.OrdinalIgnoreCase) == 0
+                        )
+                        {
+                            return transportTruckA != transportTruckB;
+                        }
+
+                        return true;
                     }
                 });
             

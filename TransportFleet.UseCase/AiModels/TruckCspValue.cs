@@ -70,19 +70,11 @@ namespace TransportFleet.UseCase.AiModels
             // Relations lists
             var relations = new Dictionary<string, List<string>>();
             
-            // Create a simple correlation about the travel day
-            foreach (var day in DemoFleetDataFactory.Days)
-            {
-                // Select travels on the same day
-                var sameDayVariables = variables
-                    .Where(v => DemoFleetDataFactory.DecodeDay(v).Equals(day))
-                    .ToList();
-                
-                // These travels are related due of their day
-                sameDayVariables.ForEach(v => 
-                    relations.Add(v, sameDayVariables.Where(vv => vv != v).ToList())
-                );
-            }
+            // Simplest case as possible
+            // Every variables is related with each other
+            variables.ForEach(v => 
+                relations.Add(v, variables.Where(vv => vv != v).ToList())
+            );
 
             // Pack all
             var data = new Dictionary<string, (List<TruckCspValue> domains, List<string> relations)>(

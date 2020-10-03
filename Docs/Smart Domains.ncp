@@ -7,7 +7,7 @@
       <Entity type="Class">
         <Name>TransportTruck</Name>
         <Access>Public</Access>
-        <Location left="312" top="409" />
+        <Location left="345" top="377" />
         <Size width="275" height="270" />
         <Collapsed>False</Collapsed>
         <Member type="Property">public string Location { get; }</Member>
@@ -23,8 +23,8 @@
       <Entity type="Interface">
         <Name>IWiseActor</Name>
         <Access>Public</Access>
-        <Location left="233" top="188" />
-        <Size width="404" height="119" />
+        <Location left="54" top="377" />
+        <Size width="228" height="119" />
         <Collapsed>False</Collapsed>
         <Member type="Method">void Update(TransportTruck transportTruck)</Member>
         <Member type="Method">object FutureAccidentIncidence()</Member>
@@ -69,16 +69,31 @@
         <Member type="Property">public DateTime Created { get; }</Member>
         <Modifier>Abstract</Modifier>
       </Entity>
+      <Entity type="Class">
+        <Name>EventSourcedAggregate</Name>
+        <Access>Public</Access>
+        <Location left="345" top="92" />
+        <Size width="275" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public Guid Id { get; protected set; }</Member>
+        <Member type="Property">public int Version { get; set; }</Member>
+        <Member type="Property">public List&lt;DomainEvent&gt; Changes { get; protected set; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
     </Entities>
     <Relationships>
       <Relationship type="Dependency" first="0" second="1">
         <Label>
         </Label>
-        <StartOrientation>Vertical</StartOrientation>
-        <EndOrientation>Vertical</EndOrientation>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>320</X>
+          <Y>521</Y>
+        </BendPoint>
         <BendPoint relativeToStartShape="False">
-          <X>426</X>
-          <Y>338</Y>
+          <X>313</X>
+          <Y>452</Y>
         </BendPoint>
       </Relationship>
       <Relationship type="Generalization" first="2" second="3">
@@ -93,21 +108,52 @@
         <StartOrientation>Vertical</StartOrientation>
         <EndOrientation>Vertical</EndOrientation>
       </Relationship>
-      <Relationship type="Association" first="0" second="5">
-        <Label>
-        </Label>
+      <Relationship type="Generalization" first="0" second="6">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="6" second="5">
         <StartOrientation>Horizontal</StartOrientation>
         <EndOrientation>Horizontal</EndOrientation>
         <BendPoint relativeToStartShape="True">
-          <X>612</X>
-          <Y>562</Y>
-        </BendPoint>
-        <BendPoint relativeToStartShape="False">
-          <X>738</X>
-          <Y>157</Y>
+          <X>658</X>
+          <Y>204</Y>
         </BendPoint>
         <Direction>Unidirectional</Direction>
         <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>Infrastructure with AI</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>WiseActor</Name>
+        <Access>Public</Access>
+        <Location left="261" top="368" />
+        <Size width="632" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private readonly IDictionary&lt;Guid, NaiveBayes&gt; _bayesianModel</Member>
+        <Member type="Field">private readonly NaiveBayesLearning _learner</Member>
+        <Member type="Method">void Update(TransportTruck transportTruck)</Member>
+        <Member type="Method">object FutureAccidentIncidence(Guid transportTruckId, bool goodWeatherCondition, TimeSpan delay, double fatigue)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IWiseActor</Name>
+        <Access>Public</Access>
+        <Location left="261" top="166" />
+        <Size width="632" height="100" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Update(TransportTruck transportTruck)</Member>
+        <Member type="Method">object FutureAccidentIncidence(Guid transportTruckId, bool goodWeatherCondition, TimeSpan delay, double fatigue)</Member>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Realization" first="0" second="1">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
       </Relationship>
     </Relationships>
   </ProjectItem>
